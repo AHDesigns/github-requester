@@ -12,12 +12,13 @@ pub async fn make_request(
     let client = reqwest::Client::new();
 
     let name = env::var("REPO_NAME").expect("missing env var REPO_NAME");
+    let org = env::var("ORG_NAME").expect("missing env var ORG_NAME");
 
-    println!("fetching info for {}", &name);
+    println!("fetching info for {}/{}", &org, &name);
 
     let config = GetPrArgs {
         name: name,
-        owner: "sky-uk".to_string(),
+        owner: org,
         after: after.clone(),
     };
 
@@ -27,7 +28,7 @@ pub async fn make_request(
 
     println!("sending request: {:#?}", &body);
 
-    let token = env::var("GH_SKY_ACCESS_TOKEN").expect("missing env var GH_SKY_ACCESS_TOKEN");
+    let token = env::var("ACCESS_TOKEN").expect("missing env var ACCESS_TOKEN");
 
     let response = client
         .post(request_url)
